@@ -1,0 +1,11 @@
+#исключаем папки
+Debug/
+.vs/
+crypto1/*
+#кроме этих
+!crypto1/*.cpp
+!crypto1/*.h
+#исключаем файлы в папке
+*.sln
+*.db
+*.opendb
