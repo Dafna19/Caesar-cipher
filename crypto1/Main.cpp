@@ -2,9 +2,9 @@
 #include<iostream>
 #define MAX 1000
 using namespace std;
-/*закомментить Ctrl K, Ctrl C
-раскомментить Ctrl K, Ctrl U
-argv[1] - книги дл€ большой статистики, argv[2] - таблица большой статистики
+/*comment Ctrl K, Ctrl C
+uncomment Ctrl K, Ctrl U
+argv[1] - books a for full statistics, argv[2] - a table with the full statistics
 */
 
 
