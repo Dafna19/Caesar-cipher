@@ -2,7 +2,7 @@
 #include <iostream>
 
 
-int Caesar::find(int n) {//индекс
+/*int Caesar::find(int n) {//индекс
 	int add = -1;
 	for (int i = 0; i < 256; i++) {
 		if (freq[i] == n)
@@ -11,6 +11,32 @@ int Caesar::find(int n) {//индекс
 			add = i;
 	}
 	return add;//неточное совпадение
+}*/
+
+void Caesar::counting(bool b, float * fr, char *t, FILE *f){//0 - из массива,  1 - из файла
+	for (int i = 0; i < 256; i++)
+		fr[i] = 0;
+	int sum = 0;
+
+	if (b) {//из файла
+		while (!feof(f)) {
+			int k = getc(f);
+			fr[k]++;//считает
+			sum++;
+		}
+	}
+	else { //из массива
+		int i = 0;
+		while (t[i] != '\0') {//заполение текущей статистики
+			int n = (t[i] + 256) % 256;
+			fr[n]++;
+			i++;
+			sum++;
+		}
+	}
+
+	for (int i = 0; i < 256; i++)
+		fr[i] = fr[i] / sum;//частоты
 }
 
 void Caesar::coding(char * t, int k ) {
@@ -19,35 +45,26 @@ void Caesar::coding(char * t, int k ) {
 		t[i] = (t[i] + k) % 256;
 		i++;
 	}
+	std::cout << "key = " << k << std::endl;
 }
 
 void Caesar::decoding(char * t, int k) {
 	int i = 0;
 	while (t[i] != '\0') {
-		if (t[i] - k < 0)
-			t[i] = t[i] - k + 256;
-		else
-			t[i] = t[i] - k;
-		i++;
+		t[i] = (t[i] - k + 256) % 256;
+		++i;
 	}
 }
 
-void Caesar::countFreq() {//считает статистику по большому тексту
-	for (int i = 0; i < 256; i++)
-		freq[i] = 0;
-
-	int sum = 0;
+//задавать имя файлов извне
+void Caesar::countFreq(char *book, char *table) {//считает статистику по большому тексту
 	FILE *text, *freqTable;
-	fopen_s(&text, "books.txt", "r");
-	while (!feof(text)) {
-		int k = getc(text);
-		freq[k]++;//считает
-		sum++;
-	}
+	fopen_s(&text, book, "r");
+	counting(1, freq, NULL, text);
+
 	//записывает частоты в файл
-	fopen_s(&freqTable, "table.txt", "wb");
+	fopen_s(&freqTable, table, "wb");
 	for (int i = 0; i < 256; i++) {
-		freq[i] = freq[i] / sum;
 		//std::cout << i << " [" << (char)i << "] " << freq[i] << std::endl;
 		fwrite(&freq[i], sizeof(float), 1, freqTable);
 	}
@@ -55,28 +72,15 @@ void Caesar::countFreq() {//считает статистику по большому тексту
 	fclose(freqTable);
 }
 
-int Caesar::freqTest(char * t) {
-	int key, sum = 0;
+int Caesar::freqTest(char * t, char *table) {
+	int key;
 	FILE *tabl;
 	float currFreq[256];
-	for (int i = 0; i < 256; i++)
-		currFreq[i] = 0;
+	counting(0, currFreq, t, NULL);//считает статистику
 
-	fopen_s(&tabl, "table.txt", "r");
+	fopen_s(&tabl, table, "r");
 	for (int i = 0; i < 256; i++)
 		fread(&freq[i], sizeof(float), 1, tabl);
-
-	int i = 0;
-	while (t[i] != '\0') {//заполение текущей статистики
-		int n = (t[i] + 256) % 256;
-		currFreq[n]++;
-		i++;
-		sum++;
-	}
-	for (int i = 0; i < 256; i++) {
-		currFreq[i] = currFreq[i] / sum;//частоты
-		//std::cout << i << " [" << (char)i << "] " << currFreq[i] << std::endl;
-	}
 
 	int maxi, maxi2;
 	float max = 0, max2 = 0;
