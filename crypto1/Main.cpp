@@ -4,7 +4,7 @@
 using namespace std;
 /*comment Ctrl K, Ctrl C
 uncomment Ctrl K, Ctrl U
-argv[1] - books a for full statistics, argv[2] - a table with the full statistics
+argv[1] - books for a full statistics, argv[2] - a table with the full statistics
 */
 
 
@@ -18,7 +18,7 @@ void main(int argc, char* argv[]) {
 
 	cout << "your text:\n";
 	cout << string << endl;
-	c.coding(string, 300);
+	c.coding(string, 71);
 	cout << "coded text:\n";
 	cout << string << endl;
 
