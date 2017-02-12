@@ -2,7 +2,7 @@
 #include <iostream>
 
 
-/*int Caesar::find(int n) {//индекс
+/*int Caesar::find(int n) {//индекс 
 	int add = -1;
 	for (int i = 0; i < 256; i++) {
 		if (freq[i] == n)
